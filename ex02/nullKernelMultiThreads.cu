@@ -54,19 +54,39 @@ main( int argc, char *argv[] )
     printf( "Measuring asynchronous launch time... " ); fflush( stdout );
 
     chTimerTimestamp start, stop;
+    
+    printf( "Asynchronous kernel statup:" );
+    for ( int n = 1; n < 1025; n = n*2 ) {
+        chTimerGetTime( &start );
+        for ( int i = 0; i < cIterations; i++ ) {
+            NullKernel<<<1,n>>>();
+        }
+        cudaThreadSynchronize();
+        chTimerGetTime( &stop );
 
-    chTimerGetTime( &start );
-    for ( int i = 0; i < cIterations; i++ ) {
-        NullKernel<<<1,1>>>();
+        {
+            double microseconds = 1e6*chTimerElapsedTime( &start, &stop );
+            double usPerLaunch = microseconds / (float) cIterations;
+
+            printf( "%.2f us\n", usPerLaunch ); 
+        }
     }
-    cudaThreadSynchronize();
-    chTimerGetTime( &stop );
+    
+    printf( "Synchronous kernel startup:" );
+    for ( int n = 1; n < 1025; n = n*2 ) {
+        chTimerGetTime( &start );
+        for ( int i = 0; i < cIterations; i++ ) {
+            NullKernel<<<1,n>>>();
+            cudaThreadSynchronize();
+        }
+        chTimerGetTime( &stop );
 
-    {
-        double microseconds = 1e6*chTimerElapsedTime( &start, &stop );
-        double usPerLaunch = microseconds / (float) cIterations;
+        {
+            double microseconds = 1e6*chTimerElapsedTime( &start, &stop );
+            double usPerLaunch = microseconds / (float) cIterations;
 
-        printf( "%.2f us\n", usPerLaunch );
+            printf( "%.2f us\n", usPerLaunch ); 
+        }
     }
 
     return 0;

@@ -1,6 +1,6 @@
 /*
  *
- * Modified from nullKernelAsync.cu
+ * nullKernelAsync.cu
  *
  * Microbenchmark for throughput of asynchronous kernel launch.
  *
@@ -58,8 +58,8 @@ main( int argc, char *argv[] )
     chTimerGetTime( &start );
     for ( int i = 0; i < cIterations; i++ ) {
         NullKernel<<<1,1>>>();
+		cudaThreadSynchronize();
     }
-    cudaThreadSynchronize();
     chTimerGetTime( &stop );
 
     {
