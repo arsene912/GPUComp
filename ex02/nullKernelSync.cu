@@ -51,7 +51,7 @@ main( int argc, char *argv[] )
 {
     //const int cIterations = 1000000;
 	const int cIterations = 1000000;
-    printf( "Measuring asynchronous launch time... " ); fflush( stdout );
+    printf( "Measuring synchronous launch time... " ); fflush( stdout );
 
     chTimerTimestamp start, stop;
 

@@ -49,13 +49,12 @@ NullKernel()
 int
 main( int argc, char *argv[] )
 {
-    //const int cIterations = 1000000;
 	const int cIterations = 1000000;
-    printf( "Measuring asynchronous launch time... " ); fflush( stdout );
+    double microseconds, usPerLaunch;
 
     chTimerTimestamp start, stop;
     
-    printf( "Asynchronous kernel statup:" );
+    printf( "Asynchronous kernel statup:\n" ); fflush(stdout);
     for ( int n = 1; n < 1025; n = n*2 ) {
         chTimerGetTime( &start );
         for ( int i = 0; i < cIterations; i++ ) {
@@ -64,16 +63,15 @@ main( int argc, char *argv[] )
         cudaThreadSynchronize();
         chTimerGetTime( &stop );
 
-        {
-            double microseconds = 1e6*chTimerElapsedTime( &start, &stop );
-            double usPerLaunch = microseconds / (float) cIterations;
+        microseconds = 1e6*chTimerElapsedTime( &start, &stop );
+        usPerLaunch = microseconds / (float) cIterations;
 
-            printf( "%.2f us\n", usPerLaunch ); 
-        }
+        printf( "%d threads; %.2f us\n", n, usPerLaunch ); fflush(stdout);
     }
     
-    printf( "Synchronous kernel startup:" );
+    printf( "Synchronous kernel startup:\n" ); fflush(stdout);
     for ( int n = 1; n < 1025; n = n*2 ) {
+        printtf( "# threads: %d", n );
         chTimerGetTime( &start );
         for ( int i = 0; i < cIterations; i++ ) {
             NullKernel<<<1,n>>>();
@@ -81,12 +79,10 @@ main( int argc, char *argv[] )
         }
         chTimerGetTime( &stop );
 
-        {
-            double microseconds = 1e6*chTimerElapsedTime( &start, &stop );
-            double usPerLaunch = microseconds / (float) cIterations;
+        microseconds = 1e6*chTimerElapsedTime( &start, &stop );
+        usPerLaunch = microseconds / (float) cIterations;
 
-            printf( "%.2f us\n", usPerLaunch ); 
-        }
+        printf( "%d threads; %.2f us\n", n, usPerLaunch ); fflush(stdout);
     }
 
     return 0;

@@ -60,27 +60,23 @@ NullKernel(int maxCycle, bool writeDiff)
 int
 main( int argc, char *argv[] )
 {
-    //const int cIterations = 1000000;
 	const int cIterations = 1000000;
-    printf( "Measuring asynchronous launch time... " ); fflush( stdout );
-
+    double microseconds, usPerLaunch;
+    
     chTimerTimestamp start, stop;
 
-    for ( int j = 0; j < 3000; j +=100 ) {
-        fprintf( "Waited cycles: %d", j );
+    for ( int j = 0; j < 3001; j +=100 ) {
         chTimerGetTime( &start );
         for ( int i = 0; i < cIterations; i++ ) {
             NullKernel<<<1,1>>>( j, false );
         }
         cudaThreadSynchronize();
         chTimerGetTime( &stop );
-
-        {
-            double microseconds = 1e6*chTimerElapsedTime( &start, &stop );
-            double usPerLaunch = microseconds / (float) cIterations;
+        
+        microseconds = 1e6*chTimerElapsedTime( &start, &stop );
+        usPerLaunch = microseconds / (float) cIterations;
             
-            printf( "%.2f us\n", usPerLaunch );     
-        }
+        printf( "%d cycles; %.2f us\n", j, usPerLaunch ); fflush( stdout );
     }
 
     return 0;
