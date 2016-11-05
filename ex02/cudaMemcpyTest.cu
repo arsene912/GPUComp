@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
     chTimerTimestamp start, stop;
     double microseconds;
     
-    for (i=0; i<10, i++) {
+    for (i=0; i<100, i++) {
         cudaMalloc((void**)&dmen, size);   // menory on device
         hpage = (int*) malloc(size);   // pageable memory on host
         cudaMallocHost((void**)&hpin, size);   // pinned memory on host
