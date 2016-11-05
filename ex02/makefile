@@ -4,4 +4,7 @@ bin = $(patsubst %.cu,%,$(src))
 all: $(bin)
 
 %: %.cu
-    nvcc -o $@ $<
+	nvcc -o $@ $< -I
+
+clean:
+	rm -f $(bin)

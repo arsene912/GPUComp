@@ -11,5 +11,6 @@ module load cuda/7.0
 ./nullKernelAsync
 ./nullKernelSync
 ./nullKernelMultiThreads
+./nullKernelAsyncWait
 
 exit
