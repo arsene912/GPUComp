@@ -71,7 +71,6 @@ main( int argc, char *argv[] )
     
     printf( "Synchronous kernel startup:\n" ); fflush(stdout);
     for ( int n = 1; n < 1025; n = n*2 ) {
-        printtf( "# threads: %d", n );
         chTimerGetTime( &start );
         for ( int i = 0; i < cIterations; i++ ) {
             NullKernel<<<1,n>>>();
