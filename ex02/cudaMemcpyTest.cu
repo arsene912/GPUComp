@@ -7,8 +7,8 @@ int main(int argc, char *argv[]) {
     chTimerTimestamp start, stop;
     double microseconds;
     
-    for (i=0; i<100, i++) {
-        cudaMalloc((void**)&dmen, size);   // menory on device
+    for (int i=0; i<100; i++) {
+        cudaMalloc((void**)&dmem, size);   // menory on device
         hpage = (int*) malloc(size);   // pageable memory on host
         cudaMallocHost((void**)&hpin, size);   // pinned memory on host
         
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
         microseconds = 1e6*chTimerElapsedTime( &start, &stop );
         printf("%d kB; D2H; pinned; %.2f us\n", size/1024, microseconds); fflush(stdout);
         
-        free(dmen); free(hpage); free(hpin);
+        free(dmem); free(hpage); free(hpin);
         size = size*2;   // double the size
     }
 }
