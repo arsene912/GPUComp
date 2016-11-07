@@ -50,7 +50,7 @@ NullKernel(int maxCycle, bool writeDiff)
     int stop;
     do {
         stop = clock();
-    } while ( stop - strat < maxCycle);
+    } while ( stop - start < maxCycle);
     
     if (writeDiff) {
         cycleDiff = stop - start;
