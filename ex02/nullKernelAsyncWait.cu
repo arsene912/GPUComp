@@ -64,7 +64,7 @@ main( int argc, char *argv[] )
     double microseconds, usPerLaunch;
     
     chTimerTimestamp start, stop;
-
+    // j: number of clock cycles
     for ( int j = 0; j < 3001; j +=100 ) {
         chTimerGetTime( &start );
         for ( int i = 0; i < cIterations; i++ ) {
